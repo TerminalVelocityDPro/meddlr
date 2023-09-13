@@ -4,7 +4,7 @@ _BASE_: "../../templates/unrolled.yaml"
 DATALOADER:
   SUBSAMPLE_TRAIN:
     NUM_TOTAL: 14
-    NUM_UNDERSAMPLED: 0
+    NUM_UNDERSAMPLED: 13
 OUTPUT_DIR: results://vortex-rm/mridata_knee_3dfse/unrolled/vortex/vortex_multi_aug_unrolled_14_scan
 DESCRIPTION:
   BRIEF: f"VORTEX Multi Aug Unrolled 14 Scan {AUG_TRAIN.UNDERSAMPLE.ACCELERATIONS}x mridata - loss={MODEL.RECON_LOSS.NAME}"

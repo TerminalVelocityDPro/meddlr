@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "storagePolicy": "wandb-storage-policy-v1",
+    "storagePolicyConfig": {
+        "storageLayout": "V2"
+    },
+    "contents": {
+        "requirements.frozen.txt": {
+            "digest": "kreYDFgb7RFgMLO0UZcHzg==",
+            "birthArtifactID": "QXJ0aWZhY3Q6NTQwNTI5OTQz",
+            "size": 2766
+        },
+        "wandb-job.json": {
+            "digest": "J/UFqrdwkYmHQ2/4MbAyfw==",
+            "birthArtifactID": "QXJ0aWZhY3Q6NTY2MjA0MzE2",
+            "size": 53612
+        }
+    }
+}
