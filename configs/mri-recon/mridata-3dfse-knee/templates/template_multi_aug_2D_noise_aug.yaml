@@ -1,0 +1,45 @@
+_BASE_: "template.yaml"
+AUG_TRAIN:
+  MRI_RECON:
+    AUG_SENSITIVITY_MAPS: true
+    TRANSFORMS:
+    - name: RandomMRIMultiShotMotion
+      tfms_or_gens:
+      - name: RandomAffine
+        p: 1.0
+        angle: 2
+        translate: 0.03
+        scale: 1.0
+        shear: 0 
+      nshots: 2
+      trajectory: blocked 
+      p: 1.0
+      - name: RandomNoise
+        p: 1.0
+        std_devs:
+        - 0.5
+        - 0.7
+        use_mask: true
+    NOISE:
+      MASK:
+        RHO: 1.0
+      SCHEDULER:
+        WARMUP_ITERS: 0
+        WARMUP_METHOD: ''
+      STD_DEV:
+      - 1
+  LOSS_NAME: k_l1
+  LOSS_WEIGHT: 0.1
+  NUM_LATENT_LAYERS: 1
+  USE_CONSISTENCY: true
+CS:
+  MAX_ITER: 200
+  REGULARIZATION: 0.005
+DENOISING:
+  META_ARCHITECTURE: GeneralizedUnrolledCNN
+  NOISE:
+    STD_DEV:
+    - 1
+    USE_FULLY_SAMPLED_TARGET: true
+    USE_FULLY_SAMPLED_TARGET_EVAL: null
+
