@@ -176,6 +176,7 @@ class BasicLossComputer(LossComputer):
         super().__init__(cfg, loss_func=loss_func)
 
     def __call__(self, input, output):
+        breakpoint()
         pred: torch.Tensor = output["pred"]
         target = output["target"].to(pred.device)
         signal_model = output.get("signal_model")

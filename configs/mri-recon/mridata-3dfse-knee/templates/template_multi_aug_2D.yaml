@@ -7,22 +7,10 @@ AUG_TRAIN:
       tfms_or_gens:
       - name: RandomAffine
         p: 1.0
-        angle: 7 
-        translate: 0.1
+        angle: 2
+        translate: 0.03
         scale: 1.0
         shear: 0 
-      - name: RandomAffine
-        p: 1.0
-        angle: 0 
-        translate: 0.2
-        scale: 1.0
-        shear: 0 
-      - name: RandomAffine
-        p: 1.0
-        angle: 15 
-        translate: 0
-        scale: 1.0
-        shear: 0 
-      nshots: 5
-      trajectory: interleaved
+      nshots: 2
+      trajectory: blocked 
       p: 1.0

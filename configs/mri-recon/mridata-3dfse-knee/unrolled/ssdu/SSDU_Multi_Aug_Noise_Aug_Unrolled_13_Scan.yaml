@@ -1,0 +1,87 @@
+# Inherit fields from the unrolled.yaml config.
+_BASE_: "../../templates/unrolled.yaml"
+DATALOADER:
+  SUBSAMPLE_TRAIN:
+    # 1 supervised and 13 unsupervised scans for training
+    NUM_TOTAL: 14
+    NUM_UNDERSAMPLED: 13
+# Specify an output directory that is unique for this experiment. 
+OUTPUT_DIR: results://vortex-rm/mridata_knee_3dfse/unrolled/ssdu/ssdu_multi_aug_noise_aug_unrolled_13_scan
+DESCRIPTION:
+  # Use f-strings to specify reading values in braces ({}) the config file.
+  # This can only be done for string fields.
+  BRIEF: f"SSDU Multi Aug Noise Aug Unrolled {AUG_TRAIN.UNDERSAMPLE.ACCELERATIONS}x mridata - {MODEL.SSDU.MASKER.PARAMS.kind}/loss={MODEL.RECON_LOSS.NAME}"
+  EXP_NAME: mridata_knee_3dfse/unrolled/SSDU_Multi_Aug
+  TAGS:
+  - baseline
+  - ssdu
+  - 16x
+  - mridata_knee_3dfse
+  - unrolled 
+  - noise_aug
+# For motion aug, A2R and Consistency were kept with std_dev range of 0.2 to 0.5.
+# For Unrolled, the META_ARCHITECTURE of SSDUModel is GeneralizedUnrolledCNN
+MODEL:
+  META_ARCHITECTURE: SSDUModel
+  RECON_LOSS:
+    NAME: k_l1
+    RENORMALIZE_DATA: false
+  SSDU:
+    META_ARCHITECTURE: GeneralizedUnrolledCNN 
+    MASKER:
+      # These parameters were taken from the VORTEX/Noise2Recon papers. 
+      PARAMS:
+        kind: uniform
+        rhos: 0.4  # Default value in SSDU code
+        p: 1.0
+        per_example: true
+    AUGMENTOR:
+      TRANSFORMS:
+      - name: RandomMRIMultiShotMotion 
+        tfms_or_gens:
+        - name: RandomAffine
+          p: 1.0
+          angle: 2 
+          translate: 0.03
+          scale: 1.0
+          shear: 0 
+        nshots: 2
+        trajectory: blocked 
+        p: 1.0
+        - name: RandomNoise
+          p: 1.0
+          std_devs:
+          - 0.5
+          - 0.7
+          use_mask: true
+      NOISE:
+        MASK:
+          RHO: 1.0
+        SCHEDULER:
+          WARMUP_ITERS: 0
+          WARMUP_METHOD: ''
+        STD_DEV:
+        - 1
+    LOSS_NAME: k_l1
+    LOSS_WEIGHT: 0.1
+    NUM_LATENT_LAYERS: 1
+    USE_CONSISTENCY: true
+  CS:
+    MAX_ITER: 200
+    REGULARIZATION: 0.005
+  DENOISING:
+    META_ARCHITECTURE: GeneralizedUnrolledCNN
+    NOISE:
+      STD_DEV:
+      - 1
+      USE_FULLY_SAMPLED_TARGET: true
+      USE_FULLY_SAMPLED_TARGET_EVAL: null
+
+AUG_TRAIN:
+  MRI_RECON:
+    TRANSFORMS: []
+VERSION: 1
+
+CUDNN_BENCHMARK: false
+
+
